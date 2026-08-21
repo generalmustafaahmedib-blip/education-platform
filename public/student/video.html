@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch Lesson</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+  header { background: rgba(255,255,255,0.05); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  header h2 { font-size: 1rem; color: #a0aec0; }
+  .badge { background: rgba(102,126,234,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: #a78bfa; font-family: monospace; font-weight: 700; }
+  #timerBar { padding: 10px 24px; display: none; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); }
+  #timerDisplay { font-size: 1.4rem; font-weight: 900; font-family: monospace; }
+  .t-ok   { color: #68d391; }
+  .t-warn { color: #f6ad55; }
+  .t-end  { color: #fc8181; }
+  #timerLabel { color: #718096; font-size: 0.85rem; }
+  #videoSection { display: none; max-width: 900px; margin: 0 auto; padding: 24px; }
+  video { width: 100%; border-radius: 12px; background: black; display: block; }
+  #blockedMsg { display: none; background: rgba(255,50,50,0.1); border: 2px solid #fc8181; border-radius: 12px; padding: 40px; text-align: center; margin: 24px; }
+  #blockedMsg h2 { color: #fc8181; margin-bottom: 10px; }
+  #blockedMsg p  { color: #718096; }
+  #quizSection { display: none; max-width: 700px; margin: 0 auto; padding: 0 24px 40px; }
+  #quizSection h2 { margin-bottom: 24px; padding: 0 0 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .quiz-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .quiz-card h4 { margin-bottom: 16px; font-size: 1rem; line-height: 1.5; }
+  .opt { display: block; padding: 12px 16px; border: 2px solid rgba(255,255,255,0.15); border-radius: 8px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; background: transparent; color: white; width: 100%; text-align: left; transition: all 0.2s; }
+  .opt:hover    { border-color: #667eea; background: rgba(102,126,234,0.15); }
+  .opt.selected { border-color: #667eea; background: rgba(102,126,234,0.3); }
+  textarea.essay { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.15); border-radius: 8px; color: white; font-size: 0.95rem; resize: vertical; min-height: 100px; outline: none; }
+  textarea.essay:focus { border-color: #667eea; }
+  .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #scoreSection { display: none; text-align: center; padding: 60px 24px; }
+  .score-circle { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 900; }
+  .s-great { background: radial-gradient(circle, #276749, #1c4532); border: 4px solid #68d391; }
+  .s-ok    { background: radial-gradient(circle, #7b5213, #44340b); border: 4px solid #f6ad55; }
+  .s-low   { background: radial-gradient(circle, #822727, #63171b); border: 4px solid #fc8181; }
+  #quizDoneMsg { display: none; background: rgba(102,126,234,0.15); border: 2px solid #667eea; border-radius: 12px; padding: 24px; text-align: center; margin: 24px; }
+  #quizDoneMsg h3 { color: #a78bfa; margin-bottom: 8px; }
+  #quizDoneMsg p  { color: #718096; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h2 id="titleHeader">Loading…</h2>
+  <span class="badge" id="codeHeader">—</span>
+</header>
+
+<div id="timerBar">
+  <span id="timerDisplay" class="t-ok">--:--</span>
+  <span id="timerLabel">⏱</span>
+</div>
+
+<div id="blockedMsg">
+  <h2>🔒 Access Denied</h2>
+  <p id="blockedText"></p>
+</div>
+
+<div id="quizDoneMsg">
+  <h3>✅ Quiz Already Submitted</h3>
+  <p>You already completed the quiz. You can continue watching the video.</p>
+</div>
+
+<div id="quizSection">
+  <h2>📝 Quiz</h2>
+  <div id="questionsDiv"></div>
+  <button class="submit-btn" id="submitBtn" onclick="doSubmitQuiz()">Submit Quiz →</button>
+  <div id="quizMsg" style="margin-top:14px;text-align:center;color:#718096"></div>
+</div>
+
+<div id="videoSection">
+  <video id="player" controls controlsList="nodownload" oncontextmenu="return false"></video>
+</div>
+
+<div id="scoreSection">
+  <div class="score-circle" id="scoreCircle"></div>
+  <h2 id="scoreTitle" style="margin-bottom:10px"></h2>
+  <p id="scoreText" style="color:#a0aec0;margin-bottom:20px"></p>
+  <div id="essayDisplay"></div>
+</div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────
+const params      = new URLSearchParams(location.search);
+const videoId     = params.get('videoId');
+const studentId   = sessionStorage.getItem('studentId');
+const studentCode = sessionStorage.getItem('studentCode') || '—';
+
+if (!videoId || !studentId) { alert('Session lost.'); location.href = 'login.html'; }
+document.getElementById('codeHeader').textContent = studentCode;
+
+let activeTimer    = null;   // only ONE timer runs at a time
+let progressTimer  = null;
+let videoStartedAt = null;
+let quizQuestions  = [];
+let answers        = {};
+let videoExpired   = false;
+let quizDone       = false;
+
+// ── Timer helpers ─────────────────────────────────────────────
+function stopTimer() {
+  clearInterval(activeTimer);
+  activeTimer = null;
+  document.getElementById('timerBar').style.display = 'none';
+}
+
+function runTimer(seconds, total, label, onDone) {
+  stopTimer(); // always stop previous timer first
+  document.getElementById('timerLabel').textContent = label;
+  document.getElementById('timerBar').style.display = 'flex';
+  updateClock(seconds, total);
+
+  activeTimer = setInterval(() => {
+    seconds--;
+    updateClock(seconds, total);
+    if (seconds <= 0) {
+      stopTimer();
+      onDone();
+    }
+  }, 1000);
+}
+
+function updateClock(s, total) {
+  s = Math.max(0, s);
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  const el = document.getElementById('timerDisplay');
+  if (d > 0) el.textContent = d + 'd ' + pad(h) + ':' + pad(m) + ':' + pad(sec);
+  else if (h > 0) el.textContent = pad(h) + ':' + pad(m) + ':' + pad(sec);
+  else el.textContent = pad(m) + ':' + pad(sec);
+  const pct = total > 0 ? s / total : 0;
+  el.className = pct > 0.5 ? 't-ok' : pct > 0.2 ? 't-warn' : 't-end';
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+// ── Show/hide sections ────────────────────────────────────────
+function showOnly(sectionId) {
+  ['blockedMsg','quizDoneMsg','quizSection','videoSection','scoreSection'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  if (sectionId) document.getElementById(sectionId).style.display = 'block';
+}
+
+function showBlocked(msg) {
+  stopTimer();
+  document.getElementById('blockedText').textContent = msg;
+  showOnly('blockedMsg');
+}
+
+// ── Progress sync ─────────────────────────────────────────────
+function startProgress() {
+  clearInterval(progressTimer);
+  progressTimer = setInterval(async () => {
+    if (!videoStartedAt) return;
+    const elapsed = Math.floor((Date.now() - videoStartedAt) / 1000);
+    await api('POST', '/api/student/watch-progress', { studentId, videoId, secondsWatched: elapsed });
+  }, 5000);
+}
+
+async function finishVideo() {
+  clearInterval(progressTimer);
+  if (videoStartedAt) {
+    const elapsed = Math.floor((Date.now() - videoStartedAt) / 1000);
+    await api('POST', '/api/student/watch-progress', { studentId, videoId, secondsWatched: elapsed });
+  }
+  await api('POST', '/api/student/watch-complete', { studentId, videoId });
+}
+
+// ── Video phase ───────────────────────────────────────────────
+async function startVideoPhase(remainingTime, totalTime, videoUrl) {
+  showOnly('videoSection');
+  document.getElementById('player').src = videoUrl;
+
+  // Record start on server (only first time)
+  await api('POST', '/api/student/video-start', { studentId, videoId });
+  videoStartedAt = Date.now();
+
+  startProgress();
+
+  // Start VIDEO timer only
+  runTimer(remainingTime, totalTime, '⏱ Video time remaining', async () => {
+    // Timer ran out
+    videoExpired = true;
+    const player = document.getElementById('player');
+    player.pause();
+    player.src = '';
+    await api('POST', '/api/student/video-expired', { studentId, videoId });
+    await finishVideo();
+
+    // Video-first: show quiz after expiry if not done
+    if (!quizDone && quizQuestions.length > 0) {
+      startQuizPhase(currentVideo.quiz_time_limit);
+    } else {
+      showBlocked('Your video time has expired. You cannot watch this video again.');
+    }
+  });
+
+  // Natural video end
+  document.getElementById('player').addEventListener('ended', async () => {
+    if (videoExpired) return;
+    stopTimer();
+    await finishVideo();
+    // Video-first: show quiz if not done
+    if (!quizDone && quizQuestions.length > 0 && !currentVideo.quiz_first) {
+      startQuizPhase(currentVideo.quiz_time_limit);
+    }
+  }, { once: true });
+}
+
+// ── Quiz phase ────────────────────────────────────────────────
+function startQuizPhase(quizTimeSecs) {
+  if (quizDone) return; // never show quiz twice
+  showOnly('quizSection');
+
+  // Start QUIZ timer only (video timer already stopped)
+  if (quizTimeSecs > 0) {
+    runTimer(quizTimeSecs, quizTimeSecs, '⏱ Quiz time remaining', () => {
+      document.getElementById('quizMsg').textContent = '⏱ Time is up! Submitting…';
+      document.querySelectorAll('.opt').forEach(b => b.disabled = true);
+      document.querySelectorAll('textarea.essay').forEach(t => t.disabled = true);
+      document.getElementById('submitBtn').disabled = true;
+      setTimeout(doSubmitQuiz, 1500);
+    });
+  }
+}
+
+// ── Quiz questions ────────────────────────────────────────────
+async function loadQuiz() {
+  const r = await fetch('/api/student/quiz/' + videoId).then(x => x.json());
+  quizQuestions = r.questions;
+  if (!quizQuestions.length) return;
+  document.getElementById('questionsDiv').innerHTML = quizQuestions.map((q, i) => {
+    if (q.type === 'essay') return '<div class="quiz-card"><h4>' + (i+1) + '. ' + q.question + '</h4><textarea class="essay" id="e_' + q.id + '" placeholder="Write your answer here…"></textarea></div>';
+    return '<div class="quiz-card"><h4>' + (i+1) + '. ' + q.question + '</h4>' +
+      ['a','b','c','d'].map(l => '<button class="opt" onclick="pick(\'' + q.id + '\',\'' + l + '\',this)">' + q['option_' + l] + '</button>').join('') + '</div>';
+  }).join('');
+}
+
+function pick(qId, choice, btn) {
+  answers[qId] = choice;
+  btn.closest('.quiz-card').querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+async function doSubmitQuiz() {
+  quizQuestions.forEach(q => {
+    if (q.type === 'essay') { const t = document.getElementById('e_' + q.id); if (t) answers[q.id] = t.value.trim(); }
+  });
+
+  const r = await api('POST', '/api/student/quiz-submit', { studentId, videoId, answers });
+  quizDone = true;
+  stopTimer();
+  showOnly('scoreSection');
+
+  const pct = r.total > 0 ? r.score / r.total : -1;
+  const circle = document.getElementById('scoreCircle');
+  if (r.total > 0) {
+    circle.textContent = r.score + '/' + r.total;
+    circle.className   = 'score-circle ' + (pct >= 0.75 ? 's-great' : pct >= 0.5 ? 's-ok' : 's-low');
+    document.getElementById('scoreTitle').textContent = pct >= 0.75 ? '🎉 Great job!' : pct >= 0.5 ? '👍 Not bad!' : '📚 Keep studying!';
+    document.getElementById('scoreText').textContent  = 'You scored ' + r.score + ' out of ' + r.total + ' correctly.';
+  } else {
+    circle.textContent = '✅'; circle.className = 'score-circle s-great';
+    document.getElementById('scoreTitle').textContent = 'Quiz Submitted!';
+    document.getElementById('scoreText').textContent  = 'Your answers were sent to the teacher.';
+  }
+
+  // Quiz-first: after quiz, start video (timer begins now)
+  if (currentVideo && currentVideo.quiz_first) {
+    document.getElementById('scoreText').textContent += ' Video starts in 3 seconds…';
+    setTimeout(async () => {
+      const vr = await fetch('/api/student/video/' + videoId + '/' + studentId).then(x => x.json());
+      if (!vr.ok) { showBlocked(vr.msg); return; }
+      await startVideoPhase(vr.remainingTime, currentVideo.video_time_limit, vr.videoUrl);
+    }, 3000);
+  }
+}
+
+// ── API helper ────────────────────────────────────────────────
+async function api(method, url, data) {
+  return fetch(url, { method, headers: {'Content-Type':'application/json'}, body: data ? JSON.stringify(data) : undefined }).then(r => r.json());
+}
+
+// ── Init ──────────────────────────────────────────────────────
+let currentVideo = null;
+
+async function init() {
+  const r = await fetch('/api/student/video/' + videoId + '/' + studentId).then(x => x.json());
+  if (!r.ok) { showBlocked(r.msg); return; }
+
+  currentVideo = r.video;
+  quizDone = r.quizAlreadyDone || false;
+  document.getElementById('titleHeader').textContent = '🎬 ' + currentVideo.title;
+
+  if (currentVideo.has_quiz) await loadQuiz();
+
+  if (currentVideo.has_quiz && currentVideo.quiz_first) {
+    // ─── QUIZ FIRST ───────────────────────────────────────────
+    if (quizDone) {
+      // Quiz already done — show notice and go to video
+      document.getElementById('quizDoneMsg').style.display = 'block';
+      setTimeout(async () => {
+        document.getElementById('quizDoneMsg').style.display = 'none';
+        await startVideoPhase(r.remainingTime, currentVideo.video_time_limit, r.videoUrl);
+      }, 2000);
+    } else {
+      // Quiz not done yet — show quiz ONLY (no video, no video timer)
+      startQuizPhase(currentVideo.quiz_time_limit);
+    }
+  } else {
+    // ─── VIDEO FIRST (or no quiz) ─────────────────────────────
+    await startVideoPhase(r.remainingTime, currentVideo.video_time_limit, r.videoUrl);
+    if (quizDone && currentVideo.has_quiz) {
+      // Quiz already done — show notice at the bottom
+      setTimeout(() => {
+        const notice = document.createElement('div');
+        notice.style = 'background:rgba(102,126,234,0.15);border:2px solid #667eea;border-radius:12px;padding:16px;text-align:center;margin:0 24px 24px;';
+        notice.innerHTML = '<p style="color:#a78bfa">✅ You already completed the quiz for this video.</p>';
+        document.body.appendChild(notice);
+      }, 1000);
+    }
+  }
+}
+
+init();
+</script>
+</body>
+</html>

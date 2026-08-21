@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPlatform</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .hero { text-align: center; color: white; padding: 40px 20px; }
+  h1 { font-size: 3rem; margin-bottom: 12px; }
+  p.sub { color: #a0aec0; font-size: 1.1rem; margin-bottom: 48px; }
+  .cards { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .card { background: white; border-radius: 16px; padding: 36px 40px; width: 200px; text-align: center; text-decoration: none; color: #1a202c; transition: transform 0.2s; cursor: pointer; }
+  .card:hover { transform: translateY(-6px); }
+  .card .icon { font-size: 3rem; margin-bottom: 16px; }
+  .card h2 { font-size: 1.1rem; margin-bottom: 8px; }
+  .card p { font-size: 0.85rem; color: #718096; margin: 0; }
+  .dev-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 16px 28px; text-align: center; color: #a0aec0; font-size: 0.9rem; }
+  .dev-card strong { color: white; }
+  .dev-card a { color: #90cdf4; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🎓 EduPlatform</h1>
+  <p class="sub">Share videos. Build quizzes. Track progress.</p>
+  <div class="cards">
+    <a class="card" href="/teacher/dashboard.html">
+      <div class="icon">👨‍🏫</div>
+      <h2>Teacher</h2>
+      <p>Upload videos & quizzes</p>
+    </a>
+    <a class="card" href="/student/login.html">
+      <div class="icon">👨‍🎓</div>
+      <h2>Student</h2>
+      <p>Enter your access code</p>
+    </a>
+    <a class="card" href="/developer/index.html">
+      <div class="icon">⚙️</div>
+      <h2>Developer</h2>
+      <p>Manage the platform</p>
+    </a>
+  </div>
+  <div class="dev-card" id="devInfo">
+    <p>Platform managed by <strong id="devName">—</strong> · <a id="devPhone" href="#">—</a></p>
+  </div>
+</div>
+<script>
+fetch('/api/developer').then(r=>r.json()).then(d=>{
+  document.getElementById('devName').textContent  = d.name;
+  document.getElementById('devPhone').textContent = d.phone;
+  document.getElementById('devPhone').href = 'tel:' + d.phone;
+});
+</script>
+</body>
+</html>

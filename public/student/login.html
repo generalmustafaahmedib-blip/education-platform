@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Access</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .card { background: white; border-radius: 16px; padding: 40px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  h1 { color: #2b6cb0; margin-bottom: 8px; font-size: 1.6rem; text-align: center; }
+  p.sub { color: #718096; margin-bottom: 28px; font-size: 0.9rem; text-align: center; }
+  label { font-size: 0.82rem; color: #718096; display: block; margin-bottom: 5px; font-weight: 600; }
+  input { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; margin-bottom: 14px; outline: none; text-align: center; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; }
+  input.normal { letter-spacing: 0; text-transform: none; font-weight: normal; font-size: 0.95rem; }
+  input:focus { border-color: #667eea; }
+  button { width: 100%; padding: 13px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
+  button.secondary { background: white; color: #667eea; border: 2px solid #667eea; }
+  .msg { padding: 12px; border-radius: 8px; margin-bottom: 14px; font-size: 0.9rem; text-align: center; }
+  .err { background: #fff5f5; color: #c53030; }
+  .ok  { background: #f0fff4; color: #276749; }
+  .video-info { background: #ebf4ff; border-radius: 10px; padding: 14px; margin-bottom: 18px; }
+  .video-info h3 { color: #2b6cb0; margin-bottom: 6px; font-size: 1rem; }
+  .video-info p  { color: #4a5568; font-size: 0.85rem; }
+  .id-card { background: linear-gradient(135deg, #2b6cb0, #764ba2); color: white; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 18px; }
+  .id-card .code { font-size: 1.8rem; font-weight: 900; letter-spacing: 5px; font-family: monospace; }
+  .id-card .name { font-size: 0.9rem; margin-top: 6px; opacity: 0.85; }
+  .divider { text-align: center; color: #a0aec0; font-size: 0.85rem; margin: 12px 0; }
+  .dev-info { text-align: center; margin-top: 20px; font-size: 0.82rem; color: #a0aec0; }
+  .welcome-box { background: #f0fff4; border: 2px solid #68d391; border-radius: 10px; padding: 14px; margin-bottom: 18px; text-align: center; }
+  .welcome-box h3 { color: #276749; margin-bottom: 4px; }
+  .welcome-box p { color: #718096; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>📚 Student Access</h1>
+  <p class="sub">Enter your Student ID or register as new</p>
+  <div id="msg"></div>
+
+  <!-- Step 1: Student ID or new registration -->
+  <div id="step1">
+    <label>Student ID (if you already have one)</label>
+    <input id="existingId" type="text" placeholder="STU-XXXXX" oninput="this.value=this.value.toUpperCase()" style="letter-spacing:2px">
+    <button onclick="loginWithId()">Login with my ID →</button>
+    <div class="divider">— OR register as a new student —</div>
+    <label>Full Name</label>
+    <input id="sName" class="normal" type="text" placeholder="Your full name" style="letter-spacing:0;text-transform:none">
+    <label>Your Phone</label>
+    <input id="sPhone" class="normal" type="tel" placeholder="+20 1XX XXX XXXX" style="letter-spacing:0;text-transform:none">
+    <label>Parent Phone</label>
+    <input id="pPhone" class="normal" type="tel" placeholder="+20 1XX XXX XXXX" style="letter-spacing:0;text-transform:none">
+    <button onclick="showCodeForNew()">Register as New Student →</button>
+  </div>
+
+  <!-- Step 1b: New student enters access code -->
+  <div id="step1b" style="display:none">
+    <label>Access Code from your teacher</label>
+    <input id="codeForNew" type="text" maxlength="6" placeholder="XXXXXX" oninput="this.value=this.value.toUpperCase()">
+    <button onclick="registerWithCode()">Register & Get My ID →</button>
+    <button class="secondary" onclick="backToStep1()">← Back</button>
+  </div>
+
+  <!-- Step 2: Existing student enters access code -->
+  <div id="step2" style="display:none">
+    <div class="welcome-box">
+      <h3>👋 Welcome back, <span id="welcomeName"></span>!</h3>
+      <p>Now enter the access code your teacher gave you</p>
+    </div>
+    <label>Access Code</label>
+    <input id="codeInput" type="text" maxlength="6" placeholder="XXXXXX" oninput="this.value=this.value.toUpperCase()">
+    <button onclick="validateCode()">Continue →</button>
+    <button class="secondary" onclick="backToStep1()">← Back</button>
+  </div>
+
+  <!-- Step 3: Show new student ID card -->
+  <div id="step3" style="display:none">
+    <div class="id-card">
+      <div style="font-size:0.75rem;opacity:0.7;margin-bottom:4px">YOUR STUDENT ID</div>
+      <div class="code" id="displayCode">—</div>
+      <div class="name" id="displayName"></div>
+    </div>
+    <p style="text-align:center;color:#718096;font-size:0.82rem;margin-bottom:18px">📸 Screenshot this ID — you will need it next time!</p>
+    <button onclick="goToContent()">▶ Start →</button>
+  </div>
+
+  <!-- Step 4: Existing student confirmed, show video info -->
+  <div id="step4" style="display:none">
+    <div class="video-info">
+      <h3 id="videoTitle"></h3>
+      <p id="videoDetails"></p>
+    </div>
+    <button onclick="goToContent()">▶ Start →</button>
+  </div>
+
+  <div class="dev-info" id="devInfo"></div>
+</div>
+
+<script>
+let videoData      = null;
+let studentData    = null;
+let newStudentInfo = null;
+
+window.onload = () => {
+  fetch('/api/developer').then(r => r.json()).then(d => {
+    document.getElementById('devInfo').textContent = 'Platform by ' + d.name + ' · ' + d.phone;
+  });
+};
+
+async function loginWithId() {
+  const id = document.getElementById('existingId').value.trim();
+  if (!id) return showMsg('Enter your student ID', 'err');
+  const r = await post('/api/student/check-id', { studentCode: id });
+  if (!r.ok) return showMsg(r.msg, 'err');
+  studentData = r;
+  document.getElementById('welcomeName').textContent = r.name;
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = '';
+  showMsg('ID found! Now enter your video code.', 'ok');
+}
+
+function showCodeForNew() {
+  const name   = document.getElementById('sName').value.trim();
+  const phone  = document.getElementById('sPhone').value.trim();
+  const pPhone = document.getElementById('pPhone').value.trim();
+  if (!name || !phone || !pPhone) return showMsg('Please fill all fields first', 'err');
+  newStudentInfo = { name, phone, pPhone };
+  document.getElementById('step1').style.display  = 'none';
+  document.getElementById('step1b').style.display = '';
+  showMsg('', '');
+}
+
+async function registerWithCode() {
+  const code = document.getElementById('codeForNew').value.trim();
+  if (code.length < 4) return showMsg('Enter a valid code', 'err');
+  const vr = await post('/api/student/validate-code', { code });
+  if (!vr.ok) return showMsg(vr.msg, 'err');
+  videoData = vr;
+  const r = await post('/api/student/register', {
+    name: newStudentInfo.name, phone: newStudentInfo.phone,
+    parentPhone: newStudentInfo.pPhone, videoId: videoData.videoId
+  });
+  if (!r.ok) return showMsg(r.msg, 'err');
+  sessionStorage.setItem('studentId',   r.studentId);
+  sessionStorage.setItem('studentCode', r.studentCode);
+  sessionStorage.setItem('videoData',   JSON.stringify(videoData));
+  document.getElementById('displayCode').textContent = r.studentCode;
+  document.getElementById('displayName').textContent = newStudentInfo.name;
+  document.getElementById('step1b').style.display = 'none';
+  document.getElementById('step3').style.display  = '';
+  showMsg('Registered successfully!', 'ok');
+}
+
+async function validateCode() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (code.length < 4) return showMsg('Enter a valid code', 'err');
+  const r = await post('/api/student/validate-existing', {
+    code, studentCode: studentData.studentCode
+  });
+  if (!r.ok) return showMsg(r.msg, 'err');
+  videoData = r;
+  sessionStorage.setItem('studentId',   studentData.studentId);
+  sessionStorage.setItem('studentCode', studentData.studentCode);
+  sessionStorage.setItem('videoData',   JSON.stringify(videoData));
+  document.getElementById('videoTitle').textContent = '🎬 ' + r.title;
+  let details = 'Video: ' + formatTime(r.videoTimeLimit);
+  if (r.hasQuiz) details += '  |  Quiz: ' + formatTime(r.quizTimeLimit);
+  document.getElementById('videoDetails').textContent = details;
+  document.getElementById('step2').style.display = 'none';
+  document.getElementById('step4').style.display = '';
+  showMsg('Code accepted!', 'ok');
+}
+
+function backToStep1() {
+  document.getElementById('step1').style.display  = '';
+  document.getElementById('step1b').style.display = 'none';
+  document.getElementById('step2').style.display  = 'none';
+  showMsg('', '');
+}
+
+function goToContent() {
+  window.location.href = 'video.html?videoId=' + videoData.videoId;
+}
+
+function formatTime(secs) {
+  if (!secs) return '0m';
+  const d = Math.floor(secs / 86400);
+  const h = Math.floor((secs % 86400) / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  let parts = [];
+  if (d > 0) parts.push(d + 'd');
+  if (h > 0) parts.push(h + 'h');
+  if (m > 0) parts.push(m + 'm');
+  return parts.length ? parts.join(' ') : '< 1m';
+}
+
+async function post(url, data) {
+  return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json());
+}
+
+function showMsg(msg, type) {
+  const el = document.getElementById('msg');
+  el.className = 'msg ' + (type || '');
+  el.textContent = msg;
+}
+</script>
+</body>
+</html>

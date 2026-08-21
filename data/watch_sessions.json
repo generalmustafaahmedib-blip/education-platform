@@ -1,0 +1,413 @@
+[
+  {
+    "id": "33bbd06e-3d05-4720-b57c-84a8e8c758f4",
+    "student_id": "2350be56-2e60-444e-ab59-55bd18909075",
+    "video_id": "a211d9ae-927a-4c7c-9a2a-ac26d98f9745",
+    "seconds_watched": 40,
+    "completed": 1,
+    "started_at": "2026-06-29T17:00:21.191Z",
+    "finished_at": "2026-06-29T17:01:05.324Z"
+  },
+  {
+    "id": "4ffadc26-b3aa-41f8-b73c-5ac93d8eeec7",
+    "student_id": "dc427e21-2305-42ba-a22c-3d5a721c6143",
+    "video_id": "ca7c4cac-57a0-4368-a37f-ca0aa719a4f7",
+    "seconds_watched": 132,
+    "completed": 0,
+    "started_at": "2026-06-29T17:03:42.716Z"
+  },
+  {
+    "id": "a974144a-8f59-424e-aa52-af64932e2329",
+    "student_id": "67eb10a9-b946-4d2a-b211-87e00eaec242",
+    "video_id": "119d7872-371a-4631-a29d-7ae7c183d4b0",
+    "seconds_watched": 15,
+    "completed": 1,
+    "started_at": "2026-06-29T17:20:06.262Z",
+    "finished_at": "2026-06-29T17:20:24.537Z"
+  },
+  {
+    "id": "4e50b4ba-d628-4df2-b5f6-d9e4572bb68d",
+    "student_id": "a93e32aa-ab94-41e4-a2e4-d7d9db8174e8",
+    "video_id": "119d7872-371a-4631-a29d-7ae7c183d4b0",
+    "seconds_watched": 30,
+    "completed": 1,
+    "started_at": "2026-06-29T17:20:51.995Z",
+    "finished_at": "2026-06-29T17:21:22.122Z"
+  },
+  {
+    "id": "0e349049-708e-4c4f-bd25-2eac7f54360e",
+    "student_id": "7832cde4-ec47-497f-93d9-274605235827",
+    "video_id": "f95bbab2-e232-4c30-8a4a-fa87c2e19e4c",
+    "seconds_watched": 40,
+    "completed": 1,
+    "started_at": "2026-06-29T17:23:50.359Z",
+    "finished_at": "2026-06-29T17:25:13.284Z"
+  },
+  {
+    "id": "fa0d286c-e6db-45a5-8d86-99dcafdddc5d",
+    "student_id": "de82a239-15a9-421e-94a9-e4d37325c435",
+    "video_id": "f95bbab2-e232-4c30-8a4a-fa87c2e19e4c",
+    "seconds_watched": 40,
+    "completed": 1,
+    "started_at": "2026-06-29T17:25:38.969Z",
+    "finished_at": "2026-06-29T17:26:23.073Z"
+  },
+  {
+    "id": "b6d83b4c-3b69-4383-8e53-f108188a1e12",
+    "student_id": "cc23bf93-260a-4a54-b7b7-825b7cab2172",
+    "video_id": "f95bbab2-e232-4c30-8a4a-fa87c2e19e4c",
+    "seconds_watched": 55,
+    "completed": 1,
+    "started_at": "2026-06-29T17:48:05.565Z",
+    "finished_at": "2026-06-29T17:49:05.588Z"
+  },
+  {
+    "id": "91e368e4-dfc5-4877-b5f9-e44e81f96c50",
+    "student_id": "5a1c99dc-05a5-44f5-86a6-ce3c75fa3b74",
+    "video_id": "5e29d99a-b1eb-483b-9489-128c411aa6b5",
+    "seconds_watched": 0,
+    "completed": 1,
+    "started_at": "2026-07-21T15:09:14.633Z",
+    "finished_at": "2026-07-21T15:09:15.657Z"
+  },
+  {
+    "id": "9dc34521-9e3b-4c22-b867-fdc2de91a129",
+    "student_id": "3bb53dc8-5185-4143-b160-1d4ecf61a1b0",
+    "video_id": "f365e226-66d2-4a91-992d-6edcab6479fc",
+    "seconds_watched": 35,
+    "completed": 1,
+    "started_at": "2026-07-21T15:13:21.966Z",
+    "finished_at": "2026-07-21T15:13:57.307Z"
+  },
+  {
+    "id": "ec1eb221-9ab4-4840-8db2-c09fd15e623e",
+    "student_id": "cab50361-d367-4ba4-b158-c8f427a8779a",
+    "video_id": "52d55150-8532-4649-ac98-9d64be47e352",
+    "seconds_watched": 50,
+    "completed": 1,
+    "started_at": "2026-07-21T15:38:48.864Z",
+    "finished_at": "2026-07-21T15:39:39.404Z"
+  },
+  {
+    "id": "5868b442-fc19-48b1-b4c0-69066e938191",
+    "student_id": "d6c174ec-3f26-4964-b687-fa0c3873bc8d",
+    "video_id": "0770c21b-6e25-4342-8cb7-de85cb5d498b",
+    "seconds_watched": 35,
+    "completed": 1,
+    "started_at": "2026-07-21T15:49:18.595Z",
+    "finished_at": "2026-07-21T15:49:56.798Z"
+  },
+  {
+    "id": "03098ab9-0ea7-445c-b6e9-5f11f0c8f6d8",
+    "student_id": "5186db4a-2cd5-4b41-ac3b-ea1a04b4945d",
+    "video_id": "f0110350-8984-4e3f-b844-c2c49d35f79f",
+    "seconds_watched": 35,
+    "completed": 1,
+    "started_at": "2026-07-21T15:59:49.234Z",
+    "finished_at": "2026-07-21T16:00:25.248Z"
+  },
+  {
+    "id": "4213d469-ea67-4ecd-805d-72f004f028e7",
+    "student_id": "9ae7ea7e-672a-4339-afde-2a85b3895401",
+    "video_id": "e700310e-6b63-4122-ac99-dee3b0a0a8e2",
+    "seconds_watched": 15,
+    "completed": 1,
+    "started_at": "2026-07-22T09:51:30.262Z",
+    "finished_at": "2026-07-22T09:51:59.734Z"
+  },
+  {
+    "id": "4c5b1054-cce1-42b6-aab4-f5072f8f363c",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "90d5217d-4666-4c95-aef7-0d473629d514",
+    "seconds_watched": 5,
+    "completed": 1,
+    "video_expired": 1,
+    "started_at": "2026-07-22T10:39:58.421Z",
+    "finished_at": "2026-07-22T10:48:46.533Z"
+  },
+  {
+    "id": "61c9fde5-bfbf-4d63-871b-5e630e5b6601",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "7449bcfb-c62d-401b-ac4f-61dff8bb0902",
+    "seconds_watched": 20,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-07-31T15:08:48.381Z",
+    "started_at": "2026-07-31T15:08:48.381Z",
+    "finished_at": "2026-07-31T15:09:09.385Z"
+  },
+  {
+    "id": "148d059d-41fd-43ba-acec-66069273f42d",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "59c40cec-317a-49a2-a5d0-fc38a7ba4415",
+    "seconds_watched": 60,
+    "completed": 1,
+    "video_expired": 1,
+    "video_started_at": "2026-07-31T15:11:04.031Z",
+    "started_at": "2026-07-31T15:11:04.031Z",
+    "finished_at": "2026-07-31T15:11:23.709Z"
+  },
+  {
+    "id": "83039cff-8dc9-4e1d-85df-1527def0b9e0",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "9dce99fc-0817-4e67-8dfb-905dcc755235",
+    "seconds_watched": 60,
+    "completed": 1,
+    "video_expired": 1,
+    "video_started_at": "2026-08-08T15:47:59.735Z",
+    "started_at": "2026-08-08T15:47:59.735Z",
+    "finished_at": "2026-08-08T15:48:23.345Z"
+  },
+  {
+    "id": "70558f3f-834f-4ecf-8f96-b24693cd482f",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "2d98034e-60e1-4160-8194-051de3f0bc82",
+    "seconds_watched": 60,
+    "completed": 1,
+    "video_expired": 1,
+    "video_started_at": "2026-08-08T16:00:24.914Z",
+    "started_at": "2026-08-08T16:00:24.914Z",
+    "finished_at": "2026-08-08T16:01:35.224Z"
+  },
+  {
+    "id": "7f54a10a-6e63-42b0-bba4-77f4887c41a9",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "305b7752-5754-41ac-8ca8-19d5059a2172",
+    "seconds_watched": 5,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T17:13:32.303Z",
+    "started_at": "2026-08-08T17:13:32.303Z",
+    "finished_at": "2026-08-08T17:13:50.657Z"
+  },
+  {
+    "id": "0dc4a038-5300-477f-a150-6071bfdc9c30",
+    "student_id": "73bef3d3-3540-4b12-9303-bb8f4b96ca85",
+    "video_id": "d3338d19-e5db-4016-b6c2-6f0d497e5c70",
+    "seconds_watched": 5,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T17:22:30.319Z",
+    "started_at": "2026-08-08T17:22:30.319Z",
+    "finished_at": "2026-08-08T17:22:50.796Z"
+  },
+  {
+    "id": "96cf24ef-625e-49d5-9c3d-cc9e41a6cd3a",
+    "student_id": "649274fd-e553-4688-be00-54e54eb6ea7a",
+    "video_id": "294eaf87-d99b-4f00-be06-522b387fae11",
+    "seconds_watched": 5,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T17:43:09.760Z",
+    "started_at": "2026-08-08T17:43:09.760Z",
+    "finished_at": "2026-08-08T17:43:32.523Z"
+  },
+  {
+    "id": "886f659c-48b1-43c6-92c8-7641e4c32531",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "8e3c2164-74cb-40cc-ba44-343a601d1f6f",
+    "seconds_watched": 5,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T17:47:17.214Z",
+    "started_at": "2026-08-08T17:47:17.214Z",
+    "finished_at": "2026-08-08T17:47:36.483Z"
+  },
+  {
+    "id": "a637b270-b35b-42e6-904d-23f6d19a1022",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "47308b32-4738-401b-a637-b0176de11fba",
+    "seconds_watched": 60,
+    "completed": 1,
+    "video_expired": 1,
+    "video_started_at": "2026-08-08T18:04:57.141Z",
+    "started_at": "2026-08-08T18:04:57.141Z",
+    "finished_at": "2026-08-08T18:05:22.600Z"
+  },
+  {
+    "id": "e88f2bd7-16c2-4c17-a65c-bfc659806115",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "1536bd28-c2a5-438e-9a34-6ae5fefcd48f",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T18:07:57.705Z",
+    "started_at": "2026-08-08T18:07:57.705Z",
+    "finished_at": "2026-08-08T18:08:19.851Z"
+  },
+  {
+    "id": "7252cd20-c2b0-4951-a7fd-8e4018dfb85e",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "f6f7fb80-2585-405c-80d3-f551e50e95bc",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T18:33:49.070Z",
+    "started_at": "2026-08-08T18:33:49.070Z",
+    "finished_at": "2026-08-08T18:34:06.367Z"
+  },
+  {
+    "id": "9b029869-cf0f-44e2-8bab-b712e13bf92f",
+    "student_id": "649274fd-e553-4688-be00-54e54eb6ea7a",
+    "video_id": "f6f7fb80-2585-405c-80d3-f551e50e95bc",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T18:46:41.221Z",
+    "started_at": "2026-08-08T18:46:41.221Z",
+    "finished_at": "2026-08-08T18:46:58.806Z"
+  },
+  {
+    "id": "ada422fa-58fc-48ef-8091-4ca59e667bd8",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "57fae9c1-69be-4579-bcd6-5a8fbb456ad8",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T18:50:45.368Z",
+    "started_at": "2026-08-08T18:50:45.368Z",
+    "finished_at": "2026-08-08T18:51:03.067Z"
+  },
+  {
+    "id": "e1f9fcfd-f2e1-4df1-a6ef-7d317aa806ec",
+    "student_id": "9c7e1511-d2b1-4bbb-b997-651af8d7a695",
+    "video_id": "46db304b-84fb-484f-9c0b-f130c694fcaf",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T18:54:00.550Z",
+    "started_at": "2026-08-08T18:54:00.550Z",
+    "finished_at": "2026-08-08T18:54:22.537Z"
+  },
+  {
+    "id": "b5afcd79-f4eb-40c0-ab60-c37c778e800e",
+    "student_id": "9c7e1511-d2b1-4bbb-b997-651af8d7a695",
+    "video_id": "e9ab539a-7ed8-498c-aed5-f0282326f339",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:01:48.312Z",
+    "started_at": "2026-08-08T19:01:48.312Z",
+    "finished_at": "2026-08-08T19:02:40.535Z"
+  },
+  {
+    "id": "3af72d32-37e6-45ab-9c6c-706653ac5992",
+    "student_id": "9c7e1511-d2b1-4bbb-b997-651af8d7a695",
+    "video_id": "33d81671-4640-46b4-8ffe-a3259f27c2be",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:04:37.992Z",
+    "started_at": "2026-08-08T19:04:37.992Z",
+    "finished_at": "2026-08-08T19:05:02.503Z"
+  },
+  {
+    "id": "72afa83e-b9a9-445c-8ca3-dab3ba610c58",
+    "student_id": "13b9ea8d-9313-44de-a211-729fe5c4d9b0",
+    "video_id": "8bd2f806-5461-482f-9a26-32863351ef2a",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:15:02.530Z",
+    "started_at": "2026-08-08T19:15:02.530Z",
+    "finished_at": "2026-08-08T19:15:25.093Z"
+  },
+  {
+    "id": "da967f13-855b-4e59-9410-808271c12d2b",
+    "student_id": "e1495342-0382-4eef-8578-f55b57b73ed0",
+    "video_id": "90840e69-3dd0-403b-885a-cbf2841edf03",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:19:15.905Z",
+    "started_at": "2026-08-08T19:19:15.905Z",
+    "finished_at": "2026-08-08T19:19:34.951Z"
+  },
+  {
+    "id": "7d31dde8-d4fa-4d47-81d2-32bafa3cf692",
+    "student_id": "a5bb0375-0530-4309-af42-d6865d2d76ef",
+    "video_id": "90840e69-3dd0-403b-885a-cbf2841edf03",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:20:21.399Z",
+    "started_at": "2026-08-08T19:20:21.399Z",
+    "finished_at": "2026-08-08T19:20:42.551Z"
+  },
+  {
+    "id": "f82ea573-e2f6-48a6-bc6b-5292d81379de",
+    "student_id": "3354cff5-2dd5-4f4c-bcaa-9961242687f1",
+    "video_id": "cf994d62-721a-4151-9c25-123a338291e3",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:23:35.248Z",
+    "started_at": "2026-08-08T19:23:35.248Z",
+    "finished_at": "2026-08-08T19:30:22.342Z"
+  },
+  {
+    "id": "70e3c719-474e-44ee-962f-08ae89bf3357",
+    "student_id": "c1134240-84c3-465e-b0cf-ddd0957ab423",
+    "video_id": "560b3787-838e-4b5d-9f31-55d6dda23519",
+    "seconds_watched": 25,
+    "completed": 0,
+    "video_expired": 0,
+    "video_started_at": "2026-08-08T19:40:14.801Z",
+    "started_at": "2026-08-08T19:40:14.801Z"
+  },
+  {
+    "id": "8938f6ef-a699-4381-8dd1-b9cabe53ec02",
+    "student_id": "9881b625-5247-4774-8163-b54b6fd68e08",
+    "video_id": "f0fda2e7-034c-4123-8175-8fa1e2025753",
+    "seconds_watched": 15,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-16T13:01:04.870Z",
+    "started_at": "2026-08-16T13:01:04.870Z",
+    "finished_at": "2026-08-16T13:01:24.108Z"
+  },
+  {
+    "id": "4f1c9120-7a47-42d3-948b-2bd898cdb268",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "04028b78-1a1d-4bc2-946d-e420fdd04680",
+    "seconds_watched": 0,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-16T13:30:04.523Z",
+    "started_at": "2026-08-16T13:30:04.523Z",
+    "finished_at": "2026-08-16T13:31:40.154Z"
+  },
+  {
+    "id": "bbcc9aeb-1495-4f07-9517-70a7463d3b00",
+    "student_id": "852db412-4d35-43cc-be5e-6263d7b11783",
+    "video_id": "212b6656-99af-43cf-9954-49bd6790d4cf",
+    "seconds_watched": 120,
+    "completed": 1,
+    "video_expired": 1,
+    "video_started_at": "2026-08-16T13:38:39.668Z",
+    "started_at": "2026-08-16T13:38:39.668Z",
+    "finished_at": "2026-08-16T13:41:10.282Z"
+  },
+  {
+    "id": "e12ee4f3-eaa4-4965-8f74-5e4832fda493",
+    "student_id": "7035f091-c7e7-4198-bf80-3f654f4c8cfd",
+    "video_id": "69bb6b05-e3f2-46ba-a2af-75e5e1b0304a",
+    "seconds_watched": 180,
+    "completed": 1,
+    "video_expired": 1,
+    "video_started_at": "2026-08-20T12:15:10.848Z",
+    "started_at": "2026-08-20T12:15:10.848Z",
+    "finished_at": "2026-08-20T12:17:22.396Z"
+  },
+  {
+    "id": "d2f9d0b6-f295-4982-858b-8ac2d716b2b5",
+    "student_id": "ffa89b67-a14c-4a59-92bd-4c901527b4cb",
+    "video_id": "4dbdda20-a2b6-4dd1-b1e7-fe142aa248c8",
+    "seconds_watched": 17,
+    "completed": 1,
+    "video_expired": 0,
+    "video_started_at": "2026-08-20T12:21:40.758Z",
+    "started_at": "2026-08-20T12:21:40.758Z",
+    "finished_at": "2026-08-20T12:21:58.637Z"
+  }
+]

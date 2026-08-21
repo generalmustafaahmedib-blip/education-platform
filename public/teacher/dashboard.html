@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; }
+  header { background: #2b6cb0; color: white; padding: 14px 30px; display: flex; justify-content: space-between; align-items: center; }
+  header h1 { font-size: 1.3rem; }
+  button.logout { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 6px; cursor: pointer; }
+
+  #authSection { max-width: 440px; margin: 80px auto; background: white; border-radius: 12px; padding: 36px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  #authSection h2 { margin-bottom: 24px; color: #2b6cb0; text-align: center; }
+  .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+  .tab { flex: 1; padding: 8px; border: 2px solid #e2e8f0; background: white; border-radius: 8px; cursor: pointer; font-weight: 600; }
+  .tab.active { background: #2b6cb0; color: white; border-color: #2b6cb0; }
+  input, select { width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; margin-bottom: 14px; outline: none; }
+  input:focus, select:focus { border-color: #2b6cb0; }
+  button.primary { width: 100%; padding: 12px; background: #2b6cb0; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+  button.primary:hover { background: #2c5282; }
+  .msg { padding: 10px; border-radius: 6px; margin-bottom: 14px; font-size: 0.9rem; }
+  .msg.err { background: #fff5f5; color: #c53030; }
+  .msg.ok  { background: #f0fff4; color: #276749; }
+
+  #dashboard { display: none; max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .card { background: white; border-radius: 12px; padding: 28px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); margin-bottom: 24px; }
+  .card h3 { margin-bottom: 18px; color: #2b6cb0; font-size: 1.05rem; border-bottom: 2px solid #ebf4ff; padding-bottom: 10px; }
+  label.lbl { font-size: 0.82rem; color: #718096; display: block; margin-bottom: 4px; }
+  #uploadProgress { display: none; margin-bottom: 14px; }
+  progress { width: 100%; height: 10px; border-radius: 5px; }
+
+  /* Quiz builder */
+  .question-block { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+  .question-block label { font-size: 0.82rem; color: #718096; display: block; margin-bottom: 4px; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  button.add-q { background: #ebf8ff; color: #2b6cb0; border: 2px dashed #90cdf4; border-radius: 8px; padding: 10px; width: 100%; cursor: pointer; font-weight: 600; margin-bottom: 10px; }
+  button.remove-q { background: #fff5f5; color: #c53030; border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; float: right; font-size: 0.82rem; }
+  .type-toggle { display: flex; gap: 8px; margin-bottom: 10px; }
+  .type-btn { flex: 1; padding: 6px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+  .type-btn.active { background: #2b6cb0; color: white; border-color: #2b6cb0; }
+
+  /* Video list */
+  .video-item { border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+  .video-item h4 { margin-bottom: 8px; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-right: 4px; margin-bottom: 4px; }
+  .badge.code  { background: #ebf8ff; color: #2b6cb0; font-family: monospace; font-size: 0.9rem; letter-spacing: 2px; }
+  .badge.green { background: #f0fff4; color: #276749; }
+  .badge.red   { background: #fff5f5; color: #c53030; }
+  .badge.purple{ background: #faf5ff; color: #553c9a; }
+  .badge.yellow{ background: #fefcbf; color: #744210; }
+  .video-actions { margin-top: 10px; display: flex; gap: 8px; }
+  button.small { padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+  button.blue { background: #ebf4ff; color: #2b6cb0; }
+  button.red2 { background: #fff5f5; color: #c53030; }
+
+  /* Results modal */
+  #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; overflow-y: auto; }
+  .modal-box { background: white; max-width: 900px; margin: 40px auto; border-radius: 14px; padding: 30px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: #ebf4ff; color: #2b6cb0; padding: 10px; text-align: left; }
+  td { padding: 10px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  tr:last-child td { border: none; }
+  button.close-btn { float: right; background: #e2e8f0; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+  .essay-ans { background: #f7fafc; border-radius: 6px; padding: 8px; font-size: 0.85rem; color: #4a5568; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authSection">
+  <h2>🎓 Teacher Portal</h2>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login',this)">Login</button>
+    <button class="tab" onclick="switchTab('register',this)">Register</button>
+  </div>
+  <div id="authMsg"></div>
+  <div id="loginForm">
+    <input id="lName" type="text" placeholder="Your name">
+    <input id="lPass" type="password" placeholder="Password">
+    <button class="primary" onclick="login()">Login</button>
+  </div>
+  <div id="registerForm" style="display:none">
+    <input id="rCode" type="text" placeholder="Registration code (from developer)" style="letter-spacing:2px;text-transform:uppercase">
+    <input id="rName" type="text" placeholder="Your name">
+    <input id="rPass" type="password" placeholder="Password">
+    <button class="primary" onclick="register()">Create Account</button>
+  </div>
+  <p style="text-align:center;margin-top:16px;font-size:0.82rem;color:#718096" id="devContact"></p>
+</div>
+
+<!-- HEADER -->
+<header id="headerBar" style="display:none">
+  <h1>🎓 Teacher Dashboard</h1>
+  <span>
+    <span id="teacherNameSpan"></span>
+    <button class="logout" onclick="logout()">Logout</button>
+  </span>
+</header>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="grid2">
+    <!-- Upload -->
+    <div class="card">
+      <h3>📤 Upload New Video</h3>
+      <label class="lbl">Lesson title</label>
+      <input id="vTitle" type="text" placeholder="e.g. Chapter 3 - Algebra">
+      <label class="lbl">Video file</label>
+      <input id="vFile" type="file" accept="video/*">
+      <label class="lbl">Max number of students</label>
+      <input id="vMaxStudents" type="number" placeholder="e.g. 30" min="1">
+      <label class="lbl">Video time limit</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+        <div><label class="lbl">Days</label><input id="vDays" type="number" placeholder="0" min="0" style="margin-bottom:0"></div>
+        <div><label class="lbl">Hours</label><input id="vHours" type="number" placeholder="0" min="0" max="23" style="margin-bottom:0"></div>
+        <div><label class="lbl">Minutes</label><input id="vMins" type="number" placeholder="0" min="0" max="59" style="margin-bottom:0"></div>
+      </div>
+      <label class="lbl" style="margin-bottom:8px">
+        <input type="checkbox" id="vHasQuiz" style="width:auto;margin-right:6px" onchange="toggleQuizOptions()">
+        Add quiz to this video
+      </label>
+      <div id="quizOptions" style="display:none">
+        <label class="lbl">Quiz time limit (minutes)</label>
+        <input id="vQuizTime" type="number" placeholder="e.g. 15" min="1">
+        <label class="lbl" style="margin-bottom:8px">
+          <input type="checkbox" id="vQuizFirst" style="width:auto;margin-right:6px">
+          Student does quiz BEFORE watching video
+        </label>
+      </div>
+      <div id="uploadProgress"><progress id="progBar" value="0" max="100"></progress></div>
+      <div id="uploadMsg"></div>
+      <button class="primary" onclick="uploadVideo()">Upload & Generate Code</button>
+    </div>
+
+    <!-- Quiz Builder -->
+    <div class="card" id="quizBuilderCard" style="display:none">
+      <h3>📝 Build Quiz</h3>
+      <div id="questionsContainer"></div>
+      <button class="add-q" onclick="addQuestion()">+ Add Question</button>
+      <button class="primary" onclick="saveQuiz()">Save Quiz</button>
+      <div id="quizMsg"></div>
+    </div>
+  </div>
+
+  <!-- Videos list -->
+  <div class="card">
+    <h3>🎬 My Videos</h3>
+    <div id="videoList">Loading…</div>
+  </div>
+</div>
+
+<!-- RESULTS MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal()">✕ Close</button>
+    <h2 style="margin-bottom:20px">📊 Student Results</h2>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+let teacherId = localStorage.getItem('teacherId') || null;
+let currentVideoId = null;
+let questionCount  = 0;
+
+window.onload = () => {
+  // Show developer contact
+  fetch('/api/developer').then(r=>r.json()).then(d=>{
+    document.getElementById('devContact').textContent = `Need a registration code? Contact: ${d.name} – ${d.phone}`;
+  });
+  if (teacherId) showDashboard(localStorage.getItem('teacherName'));
+};
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('loginForm').style.display    = tab === 'login'    ? '' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? '' : 'none';
+}
+
+async function login() {
+  const name = document.getElementById('lName').value.trim();
+  const pass = document.getElementById('lPass').value.trim();
+  const r = await post('/api/teacher/login', { name, password: pass });
+  if (!r.ok) return showMsg('authMsg', r.msg, 'err');
+  localStorage.setItem('teacherId', r.teacherId);
+  localStorage.setItem('teacherName', r.teacherName);
+  teacherId = r.teacherId;
+  showDashboard(r.teacherName);
+}
+
+async function register() {
+  const code = document.getElementById('rCode').value.trim();
+  const name = document.getElementById('rName').value.trim();
+  const pass = document.getElementById('rPass').value.trim();
+  const r = await post('/api/teacher/register', { name, password: pass, regCode: code });
+  if (!r.ok) return showMsg('authMsg', r.msg, 'err');
+  showMsg('authMsg', '✅ Account created! Please login.', 'ok');
+}
+
+function logout() {
+  localStorage.clear(); teacherId = null;
+  document.getElementById('authSection').style.display = '';
+  document.getElementById('dashboard').style.display   = 'none';
+  document.getElementById('headerBar').style.display   = 'none';
+}
+
+function showDashboard(name) {
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('dashboard').style.display   = 'block';
+  document.getElementById('headerBar').style.display   = 'flex';
+  document.getElementById('teacherNameSpan').textContent = '👤 ' + name + '  ';
+  loadVideos();
+}
+
+function toggleQuizOptions() {
+  document.getElementById('quizOptions').style.display = document.getElementById('vHasQuiz').checked ? '' : 'none';
+}
+
+async function uploadVideo() {
+  const title    = document.getElementById('vTitle').value.trim();
+  const file     = document.getElementById('vFile').files[0];
+  const maxStu   = document.getElementById('vMaxStudents').value;
+  const days     = parseInt(document.getElementById('vDays').value)  || 0;
+  const hours    = parseInt(document.getElementById('vHours').value) || 0;
+  const mins     = parseInt(document.getElementById('vMins').value)  || 0;
+  const videoSecs = (days * 86400) + (hours * 3600) + (mins * 60);
+  const hasQuiz  = document.getElementById('vHasQuiz').checked;
+  const quizTime = parseInt(document.getElementById('vQuizTime').value) || 0;
+  const quizFirst= document.getElementById('vQuizFirst').checked;
+
+  if (!title || !file || !maxStu || videoSecs === 0) return showMsg('uploadMsg', 'Please fill all fields and set a video time limit', 'err');
+  if (hasQuiz && quizTime === 0) return showMsg('uploadMsg', 'Please enter quiz time limit', 'err');
+
+  const fd = new FormData();
+  fd.append('teacherId', teacherId);
+  fd.append('title', title);
+  fd.append('video', file);
+  fd.append('maxStudents', maxStu);
+  fd.append('videoTimeLimitSecs', videoSecs);
+  fd.append('quizTimeLimitSecs', quizTime * 60);
+  fd.append('hasQuiz', hasQuiz);
+  fd.append('quizFirst', quizFirst);
+
+  document.getElementById('uploadProgress').style.display = '';
+  const xhr = new XMLHttpRequest();
+  xhr.upload.onprogress = e => {
+    const pct = Math.round(e.loaded / e.total * 100);
+    document.getElementById('progBar').value = pct;
+    if (pct === 100) showMsg('uploadMsg', '⚙️ Converting video, please wait…', 'ok');
+  };
+  xhr.onload = () => {
+    const r = JSON.parse(xhr.responseText);
+    document.getElementById('uploadProgress').style.display = 'none';
+    if (!r.ok) return showMsg('uploadMsg', r.msg, 'err');
+    showMsg('uploadMsg', `✅ Done! Access code: ${r.accessCode}`, 'ok');
+    currentVideoId = r.videoId;
+    if (hasQuiz) {
+      document.getElementById('quizBuilderCard').style.display = '';
+      document.getElementById('questionsContainer').innerHTML  = '';
+      questionCount = 0;
+      addQuestion();
+    }
+    loadVideos();
+  };
+  xhr.open('POST', '/api/teacher/video');
+  xhr.send(fd);
+}
+
+// ── Quiz builder ─────────────────────────────────────────────
+function addQuestion() {
+  questionCount++;
+  const div = document.createElement('div');
+  div.className = 'question-block';
+  div.id = 'qb' + questionCount;
+  div.innerHTML = `
+    <button class="remove-q" onclick="this.parentElement.remove()">✕ Remove</button>
+    <label>Question ${questionCount}</label>
+    <div class="type-toggle">
+      <button class="type-btn active" onclick="setType(this,'choice','${questionCount}')">Multiple Choice</button>
+      <button class="type-btn"        onclick="setType(this,'essay','${questionCount}')">Essay</button>
+    </div>
+    <input type="hidden" class="q-type" value="choice">
+    <input type="text" placeholder="Enter question text" class="q-text">
+    <div class="choice-options">
+      <div class="options-grid">
+        <div><label>A</label><input type="text" placeholder="Option A" class="q-a"></div>
+        <div><label>B</label><input type="text" placeholder="Option B" class="q-b"></div>
+        <div><label>C</label><input type="text" placeholder="Option C" class="q-c"></div>
+        <div><label>D</label><input type="text" placeholder="Option D" class="q-d"></div>
+      </div>
+      <label>Correct answer</label>
+      <select class="q-correct">
+        <option value="a">A</option><option value="b">B</option>
+        <option value="c">C</option><option value="d">D</option>
+      </select>
+    </div>`;
+  document.getElementById('questionsContainer').appendChild(div);
+}
+
+function setType(btn, type, num) {
+  const block = document.getElementById('qb' + num);
+  block.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  block.querySelector('.q-type').value = type;
+  block.querySelector('.choice-options').style.display = type === 'choice' ? '' : 'none';
+}
+
+async function saveQuiz() {
+  const blocks = document.querySelectorAll('.question-block');
+  const questions = Array.from(blocks).map(b => ({
+    type:    b.querySelector('.q-type').value,
+    question:b.querySelector('.q-text').value,
+    a: b.querySelector('.q-a')?.value || '',
+    b: b.querySelector('.q-b')?.value || '',
+    c: b.querySelector('.q-c')?.value || '',
+    d: b.querySelector('.q-d')?.value || '',
+    correct: b.querySelector('.q-correct')?.value || ''
+  }));
+  const r = await post('/api/teacher/quiz', { videoId: currentVideoId, questions });
+  showMsg('quizMsg', r.ok ? '✅ Quiz saved!' : r.msg, r.ok ? 'ok' : 'err');
+}
+
+// ── Video list ───────────────────────────────────────────────
+function formatTime(secs) {
+  const d = Math.floor(secs / 86400);
+  const h = Math.floor((secs % 86400) / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  let parts = [];
+  if (d > 0) parts.push(d + 'd');
+  if (h > 0) parts.push(h + 'h');
+  if (m > 0) parts.push(m + 'm');
+  return parts.length ? parts.join(' ') : '0m';
+}
+
+async function loadVideos() {
+  const r  = await fetch('/api/teacher/videos/' + teacherId).then(x => x.json());
+  const el = document.getElementById('videoList');
+  if (!r.videos.length) { el.innerHTML = '<p style="color:#718096">No videos yet.</p>'; return; }
+  el.innerHTML = r.videos.map(v => `
+    <div class="video-item">
+      <h4>${v.title}</h4>
+      <span class="badge code">🔑 ${v.access_code}</span>
+      <span class="badge ${v.has_quiz ? 'green' : 'red'}">${v.has_quiz ? '📝 Has Quiz' : '❌ No Quiz'}</span>
+      <span class="badge yellow">👥 Max ${v.max_students}</span>
+      <span class="badge purple">🎬 ${formatTime(v.video_time_limit)}</span>
+      ${v.has_quiz ? `<span class="badge purple">📝 Quiz ${formatTime(v.quiz_time_limit)}</span>` : ''}
+      <span class="badge ${v.quiz_first ? 'green' : 'yellow'}">${v.quiz_first ? '📝 Quiz First' : '🎬 Video First'}</span>
+      <div class="video-actions">
+        <button class="small blue" onclick="showResults('${v.id}')">📊 Results</button>
+        <button class="small red2" onclick="deleteVideo('${v.id}')">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function deleteVideo(id) {
+  if (!confirm('Delete this video?')) return;
+  await fetch('/api/teacher/video/' + id, { method: 'DELETE' });
+  loadVideos();
+}
+
+// ── Results modal ─────────────────────────────────────────────
+async function showResults(videoId) {
+  const r = await fetch('/api/teacher/results/' + videoId).then(x => x.json());
+  const rows = r.results.map(row => {
+    let quizCell = '❌ Not done';
+    if (row.quiz) {
+      const essays = row.quiz.details.filter(d => d.type === 'essay')
+        .map(d => `<div class="essay-ans">📝 ${d.answer || '(no answer)'}</div>`).join('');
+      quizCell = `✅ ${row.quiz.score}/${row.quiz.total} correct${essays ? '<br>' + essays : ''}`;
+    }
+    return `<tr>
+      <td><strong>${row.student.student_code}</strong></td>
+      <td>${row.student.name}</td>
+      <td>${row.student.phone}</td>
+      <td>${row.student.parent_phone}</td>
+      
+      <td>${row.videoStatus}</td>
+      <td>${quizCell}</td>
+    </tr>`;
+  }).join('');
+  const total     = r.results.length;
+  const completed = r.results.filter(x => x.videoStatus && x.videoStatus.includes('Completed')).length;
+  const quizDone  = r.results.filter(x => x.quiz).length;
+  document.getElementById('modalContent').innerHTML = `
+    <p style="margin-bottom:14px;color:#718096">
+      👥 Total: <strong>${total}</strong> &nbsp;|&nbsp;
+      ✅ Completed: <strong>${completed}</strong> &nbsp;|&nbsp;
+      📝 Quiz done: <strong>${quizDone}</strong>
+    </p>
+    <table>
+      <thead><tr><th>Student ID</th><th>Name</th><th>Phone</th><th>Parent Phone</th><th>Video Status</th><th>Quiz</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="7" style="text-align:center;color:#718096">No students yet</td></tr>'}</tbody>
+    </table>`;
+  document.getElementById('modal').style.display = 'block';
+}
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+async function post(url, data) {
+  return fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) }).then(r=>r.json());
+}
+function showMsg(id, msg, type) {
+  const el = document.getElementById(id);
+  el.className = 'msg ' + type;
+  el.textContent = msg;
+}
+</script>
+</body>
+</html>

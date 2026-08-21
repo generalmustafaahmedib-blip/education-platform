@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Panel</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #1a202c; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .card { background: #2d3748; border-radius: 16px; padding: 40px; width: 100%; max-width: 440px; }
+  h1 { margin-bottom: 8px; font-size: 1.5rem; }
+  p.sub { color: #718096; margin-bottom: 28px; font-size: 0.9rem; }
+  input { width: 100%; padding: 11px 14px; border: 2px solid #4a5568; border-radius: 8px; font-size: 0.95rem; margin-bottom: 14px; background: #1a202c; color: white; outline: none; }
+  input:focus { border-color: #667eea; }
+  button { width: 100%; padding: 13px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+  .msg { padding: 12px; border-radius: 8px; margin-bottom: 14px; font-size: 0.9rem; }
+  .err { background: #742a2a; color: #feb2b2; }
+  .ok  { background: #1c4532; color: #9ae6b4; }
+  .code-box { background: #1a202c; border: 2px solid #4a5568; border-radius: 10px; padding: 20px; text-align: center; margin-top: 20px; }
+  .code-box .label { font-size: 0.8rem; color: #718096; margin-bottom: 8px; }
+  .code-box .code  { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; font-family: monospace; color: #90cdf4; }
+  a.back { display: block; text-align: center; margin-top: 20px; color: #718096; text-decoration: none; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>⚙️ Developer Panel</h1>
+  <p class="sub">Only Mustafa Ahmed can access this</p>
+  <div id="msg"></div>
+  <input id="devPass" type="password" placeholder="Developer password">
+  <button onclick="generate()">Generate Teacher Code</button>
+  <div id="codeBox" style="display:none" class="code-box">
+    <div class="label">Give this code to the teacher:</div>
+    <div class="code" id="generatedCode">—</div>
+    <p style="color:#718096;font-size:0.8rem;margin-top:8px">One-time use only</p>
+  </div>
+  <a class="back" href="/">← Back to home</a>
+</div>
+<script>
+async function generate() {
+  const pass = document.getElementById('devPass').value;
+  const r = await fetch('/api/developer/generate-code', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ devPassword: pass })
+  }).then(x => x.json());
+  if (!r.ok) return showMsg(r.msg, 'err');
+  document.getElementById('generatedCode').textContent = r.code;
+  document.getElementById('codeBox').style.display = '';
+  showMsg('Code generated! Share it with the teacher.', 'ok');
+}
+function showMsg(msg, type) {
+  const el = document.getElementById('msg');
+  el.className = 'msg ' + type;
+  el.textContent = msg;
+}
+</script>
+</body>
+</html>
